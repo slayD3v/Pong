@@ -5,7 +5,7 @@ pygame.init()
 
 from player import Player, PLAYER_SPEED, PLAYER_WIDTH
 
-windowSize = width, height = (350, 400)
+windowSize = width, height = (400, 400)
 halfHeight = height//2
 
 screen = pygame.display.set_mode(windowSize)
