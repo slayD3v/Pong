@@ -14,6 +14,8 @@ pygame.display.set_caption("Pong")
 clock = pygame.Clock()
 
 # Game State
+aiOpponent = False
+
 running = True
 
 playerA = Player(screen, True)
@@ -27,12 +29,15 @@ ballRect = pygame.Rect(0, 0, 20, 20)
 ballSpeedX = 0
 ballSpeedY = 0
 
+def clamp(value:int, minValue:int, maxValue:int):
+    return max(minValue, min(value, maxValue))
+
 def resetBall():
     global ballSpeedX, ballSpeedY
 
     ballRect.center = (width//2, height//2)
-    ballSpeedX = random.randint(3, 7) * random.choice([-1, 1])
-    ballSpeedY = random.randint(3, 6) * random.choice([-1, 1])
+    ballSpeedX = 7#random.randint(3, 7) * random.choice([-1, 1])
+    ballSpeedY = 6#random.randint(3, 6) * random.choice([-1, 1])
 
 resetBall()
 
@@ -49,12 +54,13 @@ while running:
     if keys[pygame.K_s]:
         playerA.move(PLAYER_SPEED)
 
-    if keys[pygame.K_UP]:
-        playerB.move(-PLAYER_SPEED)
-    
-    if keys[pygame.K_DOWN]:
-        playerB.move(PLAYER_SPEED)
-
+    if not aiOpponent:
+        if keys[pygame.K_UP]:
+            playerB.move(-PLAYER_SPEED)
+        
+        if keys[pygame.K_DOWN]:
+            playerB.move(PLAYER_SPEED)
+        
     # Check if it collides
     if ballRect.top<=0 or ballRect.bottom>=height:
         ballSpeedY *= -1
@@ -71,6 +77,10 @@ while running:
 
     ballRect.x += ballSpeedX
     ballRect.y += ballSpeedY
+
+    # AI
+    if ballRect.x>=(width*.6) and aiOpponent:
+        playerB.move( clamp(ballRect.y-playerB.rect.y, -5, 5) )
 
     # Check if out of bounds
     if (ballRect.x<-10 or ballRect.x>width):
