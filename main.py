@@ -31,7 +31,7 @@ def resetBall():
     global ballSpeedX, ballSpeedY
 
     ballRect.center = (width//2, height//2)
-    ballSpeedX = random.randint(3, 6) * random.choice([-1, 1])
+    ballSpeedX = random.randint(3, 7) * random.choice([-1, 1])
     ballSpeedY = random.randint(3, 6) * random.choice([-1, 1])
 
 resetBall()
